@@ -101,5 +101,5 @@ plt.tight_layout()
 plt.show()
 
 # Збереження моделі
-joblib.dump(model, 'loan_model.pkl')
+joblib.dump(best_model, 'loan_model.pkl')
 
