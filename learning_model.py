@@ -68,4 +68,38 @@ plt.ylabel('Фактичне значення')
 plt.title('Матриця плутанини')
 plt.show()
 model = RandomForestClassifier()
+
+
+# Важливість ознак з найкращої моделі RandomForest
+best_model = grid_search.best_estimator_.named_steps['classifier']
+feature_importances = best_model.feature_importances_
+
+# Візуалізація важливості ознак
+feature_names = X.columns
+importances = pd.Series(feature_importances, index=feature_names).sort_values(ascending=False)
+
+plt.figure(figsize=(12, 8))
+sns.barplot(x=importances.values, y=importances.index, palette="viridis")
+plt.title('Важливість ознак у моделі RandomForest')
+plt.xlabel('Важливість')
+plt.ylabel('Ознаки')
+plt.tight_layout()
+plt.show()
+
+# Розподіл основних числових змінних
+numerical_columns = ['int.rate', 'installment', 'log.annual.inc', 'dti', 'fico']
+
+plt.figure(figsize=(16, 12))
+for i, col in enumerate(numerical_columns, 1):
+    plt.subplot(3, 2, i)
+    sns.histplot(data[col], bins=30, kde=True, color='blue')
+    plt.title(f'Розподіл змінної: {col}')
+    plt.xlabel(col)
+    plt.ylabel('Частота')
+
+plt.tight_layout()
+plt.show()
+
+# Збереження моделі
 joblib.dump(model, 'loan_model.pkl')
+
