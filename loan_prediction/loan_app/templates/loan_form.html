@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оцінка займу</title>
+</head>
+<body>
+    <h1>Введіть параметри для оцінки займу</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Оцінити займ</button>
+    </form>
+
+    {% if prediction %}
+    <h2>Результат: {{ prediction }}</h2>
+    {% endif %}
+</body>
+</html>
