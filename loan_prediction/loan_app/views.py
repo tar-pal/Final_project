@@ -3,11 +3,11 @@ from .forms import LoanForm
 import joblib
 import numpy as np
 
-# Завантаження моделі
-model = joblib.load('loan_app/loan_model.pkl')
-
 
 def loan_prediction(request):
+    # Завантаження моделі
+    model = joblib.load('loan_app/loan_model.pkl')
+
     prediction = None
     if request.method == 'POST':
         form = LoanForm(request.POST)
