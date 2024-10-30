@@ -24,9 +24,11 @@ def loan_prediction(request):
             purpose = purposes[data['purpose']]
             data['purpose'] = purpose
 
+            # Розрахунок логарифму річної заробітної плати
             log_annual_inc = np.log(data['annual_income'])
             data['log_annual_inc'] = log_annual_inc
 
+            # Розрахунок Duty to Income (відношення боргу до доходу) щомісяно
             data['dti'] = float(data['installment'])/(float(data['annual_income'])/12)
 
             features = np.array([
