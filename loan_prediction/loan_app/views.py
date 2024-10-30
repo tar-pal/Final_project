@@ -29,28 +29,13 @@ def loan_prediction(request):
 
             data['dti'] = float(data['installment'])/(float(data['annual_income'])/12)
 
-            # data['crdit_policy'] = 2
-            # data['days_with_cr_line'] = 3000
-            # data['revol_bal'] = 300
-            # data['revol_util'] = 500
-            # data['inq_last_6mnths'] = 0
-            # data['delinq_2_yrs'] = 0
-            # data['pub_rec'] = 0
-
             features = np.array([
-                # data['crdit_policy'],
                 # data['purpose'],
                 data['int_rate'],
                 data['installment'],
                 data['log_annual_inc'],
                 data['dti'],
                 data['fico'],
-                # data['days_with_cr_line'],
-                # data['revol_bal'],
-                # data['revol_util'],
-                # data['inq_last_6mnths'],
-                # data['delinq_2_yrs'],
-                # data['pub_rec'],
 
             ]).reshape(1, -1)
 
