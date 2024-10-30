@@ -68,7 +68,7 @@ print(classification_report(y_test, y_pred))
 # Побудова матриці плутанини
 conf_matrix = confusion_matrix(y_test, y_pred)
 plt.figure(figsize=(8, 6))
-sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=['Paid', 'Not Paid'], yticklabels=['Paid', 'Not Paid'])
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=['Схвалено', 'Не схвалено'], yticklabels=['Схвалено', 'Не схвалено'])
 plt.xlabel('Прогнозоване значення')
 plt.ylabel('Фактичне значення')
 plt.title('Матриця плутанини')
