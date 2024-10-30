@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
@@ -13,15 +13,17 @@ import joblib
 # Завантаження підготовлених даних
 data = pd.read_csv('prepared_loan_data.csv')
 
-# Поділ на ознаки (X) та мітки (y)
-X = data.drop('not.fully.paid', axis=1)
+# Вибір лише необхідних ознак
+features = ['purpose', 'int.rate', 'installment', 'log.annual.inc', 'fico']
+X = data[features]
 y = data['not.fully.paid']
 
 # Поділ на навчальний та тестовий набори
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
 # Визначення числових та категоріальних стовпців
-numerical_columns = X.select_dtypes(include=['float64', 'int64']).columns.tolist()
-categorical_columns = X.select_dtypes(include=['object']).columns.tolist()
+numerical_columns = ['int.rate', 'installment', 'log.annual.inc', 'fico']
+categorical_columns = ['purpose']
 
 # Попередня обробка даних
 preprocessor = ColumnTransformer(
@@ -31,11 +33,15 @@ preprocessor = ColumnTransformer(
     ]
 )
 
+# Навчання preprocessor на даних X_train
+preprocessor.fit(X_train)
+
 # Побудова Pipeline з RandomForestClassifier
 pipeline = Pipeline(steps=[
     ('preprocessor', preprocessor),
     ('classifier', RandomForestClassifier(random_state=42))
 ])
+
 # Налаштування параметрів для GridSearchCV
 param_grid = {
     'classifier__n_estimators': [100, 200],
@@ -67,15 +73,17 @@ plt.xlabel('Прогнозоване значення')
 plt.ylabel('Фактичне значення')
 plt.title('Матриця плутанини')
 plt.show()
-# model = RandomForestClassifier()
-
 
 # Важливість ознак з найкращої моделі RandomForest
 best_model = grid_search.best_estimator_.named_steps['classifier']
 feature_importances = best_model.feature_importances_
 
+# Отримання назв ознак з попередньо навченого preprocessor
+numerical_features = preprocessor.transformers_[0][2]
+categorical_features = preprocessor.transformers_[1][1].get_feature_names_out(categorical_columns)
+feature_names = np.concatenate([numerical_features, categorical_features])
+
 # Візуалізація важливості ознак
-feature_names = X.columns
 importances = pd.Series(feature_importances, index=feature_names).sort_values(ascending=False)
 
 plt.figure(figsize=(12, 8))
@@ -86,20 +94,5 @@ plt.ylabel('Ознаки')
 plt.tight_layout()
 plt.show()
 
-# Розподіл основних числових змінних
-numerical_columns = ['int.rate', 'installment', 'log.annual.inc', 'dti', 'fico']
-
-plt.figure(figsize=(16, 12))
-for i, col in enumerate(numerical_columns, 1):
-    plt.subplot(3, 2, i)
-    sns.histplot(data[col], bins=30, kde=True, color='blue')
-    plt.title(f'Розподіл змінної: {col}')
-    plt.xlabel(col)
-    plt.ylabel('Частота')
-
-plt.tight_layout()
-plt.show()
-
 # Збереження моделі
 joblib.dump(best_model, 'loan_model.pkl')
-
