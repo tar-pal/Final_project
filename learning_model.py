@@ -95,4 +95,4 @@ plt.tight_layout()
 plt.show()
 
 # Збереження моделі
-joblib.dump(best_model, 'loan_model.pkl')
+joblib.dump(best_model, 'loan_prediction/loan_app/loan_model.pkl')
