@@ -67,7 +67,7 @@ plt.xlabel('Прогнозоване значення')
 plt.ylabel('Фактичне значення')
 plt.title('Матриця плутанини')
 plt.show()
-model = RandomForestClassifier()
+# model = RandomForestClassifier()
 
 
 # Важливість ознак з найкращої моделі RandomForest

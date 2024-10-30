@@ -22,8 +22,12 @@ def loan_prediction(request):
             data = form.cleaned_data
             purpose = purposes[data['purpose']]
             data['purpose'] = purpose
+
             log_annual_inc = np.log(data['annual_income'])
             data['log_annual_inc'] = log_annual_inc
+
+            data['dti'] = float(data['installment'])/(float(data['annual_income'])/12)
+
             data['crdit_policy'] = 2
             data['days_with_cr_line'] = 3000
             data['revol_bal'] = 300
