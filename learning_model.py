@@ -14,7 +14,7 @@ import joblib
 data = pd.read_csv('prepared_loan_data.csv')
 
 # Вибір лише необхідних ознак
-features = ['purpose', 'int.rate', 'installment', 'log.annual.inc', 'fico']
+features = ['purpose', 'int.rate', 'installment', 'log.annual.inc', 'dti', 'fico']
 X = data[features]
 y = data['not.fully.paid']
 
@@ -22,14 +22,14 @@ y = data['not.fully.paid']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # Визначення числових та категоріальних стовпців
-numerical_columns = ['int.rate', 'installment', 'log.annual.inc', 'fico']
-categorical_columns = ['purpose']
+numerical_columns = ['int.rate', 'installment', 'log.annual.inc', 'dti', 'fico']
+# categorical_columns = ['purpose']
 
 # Попередня обробка даних
 preprocessor = ColumnTransformer(
     transformers=[
         ('num', StandardScaler(), numerical_columns),
-        ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_columns)
+        # ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_columns)
     ]
 )
 
@@ -80,8 +80,8 @@ feature_importances = best_model.feature_importances_
 
 # Отримання назв ознак з попередньо навченого preprocessor
 numerical_features = preprocessor.transformers_[0][2]
-categorical_features = preprocessor.transformers_[1][1].get_feature_names_out(categorical_columns)
-feature_names = np.concatenate([numerical_features, categorical_features])
+# categorical_features = preprocessor.transformers_[1][1].get_feature_names_out(categorical_columns)
+feature_names = np.concatenate([numerical_features]) #, categorical_features])
 
 # Візуалізація важливості ознак
 importances = pd.Series(feature_importances, index=feature_names).sort_values(ascending=False)
