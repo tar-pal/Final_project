@@ -13,7 +13,7 @@ import joblib
 # Завантаження підготовлених даних
 data = pd.read_csv('prepared_loan_data.csv')
 
-# Вибір лише необхідних ознак
+# Вибір лише необхідних ознак орієнтуємось на теплову мапу
 features = ['purpose', 'int.rate', 'installment', 'log.annual.inc', 'dti', 'fico']
 X = data[features]
 y = data['not.fully.paid']

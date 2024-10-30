@@ -35,7 +35,7 @@ heatmap.set_title('Correlation Matrix of Loan Data', fontsize=16)
 plt.show()
 
 # Підготовка даних
-encoded_data =  loan_data
+encoded_data = loan_data
 
 # Нормалізація числових змінних
 scaler = StandardScaler()
