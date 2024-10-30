@@ -45,7 +45,7 @@ param_grid = {
 }
 
 # Налаштування GridSearchCV з перехресною валідацією
-grid_search = GridSearchCV(pipeline, param_grid, cv=5, scoring='accuracy', n_jobs=-1, verbose=2)
+grid_search = GridSearchCV(pipeline, param_grid, cv=5, scoring='f1', n_jobs=-1, verbose=2)
 grid_search.fit(X_train, y_train)
 
 # Виведення найкращих параметрів
